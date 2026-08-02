@@ -1,4 +1,4 @@
-# Otwin — AI-Powered Digital Twins
+# Otwin AI-Powered Digital Twins
 
 Physics-informed digital twins that stay consistent over long horizons and tell you when they are uncertain.
 
@@ -8,7 +8,7 @@ Otwin is built for the cases where the twin is used to make decisions: the model
 ## Where to Start
 
 - **Main library** → [otwin](https://github.com/otwin-core/otwin)
-- Examples (including battery State-of-Health) → inside the repository
+- See the examples
 - Want to contribute or be listed as a maintainer? → Open an issue in the main repository
 
 ## License
