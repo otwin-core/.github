@@ -1,7 +1,5 @@
 <div align="center">
 
-<p align="center"><img src="assets/otwin-woodmark.png" alt="Otwin" width="260"></p>
-
 # Otwin
 
 **A collection of tools for creating digital twins and modeling systems, developed in the Python programming language, with bindings to other languages such as Julia and MATLAB.**
