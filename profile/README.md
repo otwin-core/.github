@@ -1,5 +1,7 @@
 <div align="center">
 
+<p align="center"><img src="assets/otwin-woodmark.png" alt="Otwin" width="260"></p>
+
 # Otwin
 
 **A collection of tools for creating digital twins and modeling systems, developed in the Python programming language, with bindings to other languages such as Julia and MATLAB.**
@@ -12,6 +14,8 @@ Physics-informed twins that stay consistent over long horizons and tell you when
 </div>
 
 ---
+
+<p align="center"><img src="assets/overview.png" alt="Choose a model structure, estimate the unknown parts, quantify the uncertainty, then validate against a baseline" width="900"></p>
 
 ## This is a tools ecosystem, not a library
 
