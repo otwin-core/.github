@@ -1,27 +1,27 @@
 <div align="center">
 
-# Otwin
-
-**A collection of tools for creating digital twins and modeling systems, developed in the Python programming language, with bindings to other languages such as Julia and MATLAB.**
-
-Physics-informed twins that stay consistent over long horizons and tell you when they are uncertain.
+# What is Otwin
 
 [![Specification](https://img.shields.io/badge/specification-v1.0%20draft-blueviolet?style=flat-square)](https://github.com/otwin-core/otwin-spec)
 [![License](https://img.shields.io/badge/license-Apache%202.0-brightgreen?style=flat-square)](https://opensource.org/licenses/apache)
 
 </div>
 
+It started as one repository: a tutorial showing how to build a digital twin of a Li-ion battery in Python. The original repository is still here at ´otwin-hybrid´. Now we have opened the idea because a tutorial can only be copied and a contract can be built on. A contract is different because it's a fixed, published statement of shape: a twin is anything that has an energy function, a routing matrix, a dissipation matrix, a port, and a right-hand side.
+
+We split into three stacked layers.
+
+- At the bottom is a contract: `otwin-base`. Types and protocols, no algorithms, enforced by a test that fails the build if anyone adds one. It defines what counts as a twin — a thing with an energy function, an internal routing matrix, a dissipation matrix, a port. 
+
+- Above that is a specification that's executable: `otwin-spec`. A schema for describing a twin, a set of fixtures whose answers are known in closed form, and a runner — `otwin-conformance` — that tells you whether your implementation is right-
+
+- Above that is everything that actually computes. `otwin-phs` and `otwin-iphs` for port-Hamiltonian and irreversible port-Hamiltonian dynamics. `otwin-learn` for neural networks constrained to that same form. `otwin-systems` for implementing a catalogue of physical models — water tank, DC motor, pumped hydro. `otwin-uq` for uncertainty that has been checked against measured coverage, and `otwin-eval` for validation. Then the supporting cast: `otwin-data`, `otwin-benchmarks`, `otwin-docs`, `otwin-notes`, `otwin-agents`. And three bindings — R MATLAB, Julia.
+
 ---
 
-<p align="center"><img src="assets/overview.png" alt="Choose a model structure, estimate the unknown parts, quantify the uncertainty, then validate against a baseline" width="900"></p>
+## Install
 
-## This is a tools ecosystem, not a library
-
-Otwin is **not one package**. It is a set of tools that compose, each installable on its own, each doing one thing.
-
-That is deliberate. Digital twins span physics, numerics, statistics and forecasting, and almost nobody needs all of it. Someone validating a load forecast needs the evaluation harness and nothing else. Someone modelling a pumped-hydro plant needs the port-Hamiltonian core and never touches uncertainty quantification. One monolith would make both carry the other's dependencies forever.
-
-**There is no `pip install otwin`.** Install the tool you need:
+To install the tool you need:
 
 ```bash
 pip install otwin-phs          # port-Hamiltonian systems + structure-preserving integration
@@ -30,7 +30,7 @@ pip install otwin-eval         # leakage-free forecast validation
 pip install otwin-uq           # calibrated uncertainty
 ```
 
-They compose because they all implement one small contract — [`otwin-base`](https://github.com/otwin-core/otwin-base) — and because a conformance suite verifies that they actually do.
+All them implement one small contract — [`otwin-base`](https://github.com/otwin-core/otwin-base)
 
 ---
 
@@ -40,23 +40,22 @@ They compose because they all implement one small contract — [`otwin-base`](ht
 |---|---|
 | **Understand the idea**, from a worked example in Python, Julia or R | [**`otwin-hybrid`**](https://github.com/otwin-core/otwin-hybrid) — one click into Colab |
 | **Model a physical system** | [`otwin-systems`](https://github.com/otwin-core/otwin-systems) + [`otwin-phs`](https://github.com/otwin-core/otwin-phs) |
-| **Validate a forecast honestly** | [`otwin-eval`](https://github.com/otwin-core/otwin-eval) — useful far beyond digital twins |
-| **Attach uncertainty that means something** | [`otwin-uq`](https://github.com/otwin-core/otwin-uq) |
-| **See the numbers, reproducibly** | [`otwin-benchmarks`](https://github.com/otwin-core/otwin-benchmarks) |
+| **Validate a forecast** | [`otwin-eval`](https://github.com/otwin-core/otwin-eval) — useful far beyond digital twins |
+| **Attach calibrated uncertainty** | [`otwin-uq`](https://github.com/otwin-core/otwin-uq) |
+| **See some benchmark** | [`otwin-benchmarks`](https://github.com/otwin-core/otwin-benchmarks) |
 | **Check my own implementation** | [`otwin-spec`](https://github.com/otwin-core/otwin-spec) — `otwin-conformance` |
 
 ---
 
-## What holds it together
+## How it works
 
-Three things, and they are why the tools compose rather than merely coexist.
+Otwin has three components:
 
-### 1. One contract
+### 1. Contract
 
-[`otwin-base`](https://github.com/otwin-core/otwin-base) contains types and protocols and **zero algorithms** — a test fails the build if anyone adds one. Every tool depends on it; it depends on NumPy.
+[`otwin-base`](https://github.com/otwin-core/otwin-base) contains types and protocols and **zero algorithms** — a test fails the build if anyone adds one. Every tool depends on it; it depends on NumPy in python.
 
-A model satisfies the contract *structurally*. No inheritance, no registration, no import from Otwin in your own code:
-
+A model satisfies the contract *structurally*:
 ```python
 class WaterTank:
     n_states, n_inputs = 1, 1
@@ -71,13 +70,16 @@ from otwin_base import PortHamiltonianModel
 isinstance(WaterTank(), PortHamiltonianModel)   # True
 ```
 
-That is what lets you write a tool for this ecosystem without asking anyone's permission.
+### 2. A standarized physical model
 
-### 2. A claim that can be falsified
+A port-Hamiltonian system is a way of writing down a physical model in terms of its energy rather than in terms of its behaviour. When we want to model something we write "here is how the state changes each instant". We write one function, fitted or derived, that maps the current state to a rate of change. 
 
-Declaring port-Hamiltonian structure asserts that `J` is skew-symmetric and `R` positive semidefinite — and therefore that forecasts **cannot create energy, at any horizon**.
+The port-Hamiltonian way splits the same model into four separate statements about energy, and the dynamics fall out of them:
 
-That claim is the reason to use Otwin instead of a neural network. It is also invisible on a test set: a model with a subtly wrong `J` scores beautifully on held-out data and then drifts when you extrapolate, which is exactly the situation the structure was supposed to protect you from.
+- How much energy is stored, as a function of the state. For a water tank, the water sitting in it.
+- Where energy moves internally, losing none of it. Kinetic becoming potential, electrical becoming mechanical. This is the `J` part.
+- Where energy leaves for good. Friction, resistance, viscous drag. This is `R`.
+- Where energy enters or exits through the boundary — the port. The pump feeding the tank, the valve draining it.
 
 So [`otwin-spec`](https://github.com/otwin-core/otwin-spec) checks it, against answers known in closed form:
 
@@ -93,9 +95,10 @@ $ otwin-conformance python
 
 The suite ships deliberately broken implementations and asserts each is caught — including one containing **no physics at all**, which is the adversary a suite like this usually fails to survive.
 
-### 3. Honest evaluation by default
+### 3. Checklist
 
-Temporal splits, not random ones. Baselines that are mandatory rather than optional. Skill score as the headline, because a model with excellent R² can still lose to repeating yesterday's value.
+We do a checklist and run it against your implementation. If it passes, it will be otwin-conformant
+Temporal splits, not random ones. Baselines that are mandatory rather than optional. Skill score as the headline, because a model with excellent $R^2$ can still lose to repeating yesterday's value.
 
 ---
 
