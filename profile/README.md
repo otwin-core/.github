@@ -1,189 +1,177 @@
 <div align="center">
 
-# What is Otwin
+# Otwin:Open-source tools for building physics-informed digital twins of engineering assets
 
-[![Specification](https://img.shields.io/badge/specification-v1.0%20draft-blueviolet?style=flat-square)](https://github.com/otwin-core/otwin-spec)
-[![License](https://img.shields.io/badge/license-Apache%202.0-brightgreen?style=flat-square)](https://opensource.org/licenses/apache)
+[![License](https://img.shields.io/badge/license-Apache%202.0-brightgreen?style=flat-square)](https://opensource.org/license/apache-2-0)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue?style=flat-square)](https://www.python.org/downloads/)
+
+[Models of physical assets](#models-of-physical-assets) ·
+[What we provide](#what-the-project-provides) ·
+[How it fits together](#how-the-three-fit-together) ·
+[Where to start](#where-to-start) ·
+[Status](#current-status) ·
+[Contributing](#contributing)
 
 </div>
 
-It started as one repository: a tutorial showing how to build a digital twin of a Li-ion battery in Python. The original repository is still here at ´otwin-hybrid´. Now we have opened the idea because a tutorial can only be copied and a contract can be built on. A contract is different because it's a fixed, published statement of shape: a twin is anything that has an energy function, a routing matrix, a dissipation matrix, a port, and a right-hand side.
 
-We split into three stacked layers.
+A digital twin is a model of a physical asset that is kept in step with the
+asset's sensors and used to predict what it will do next. Otwin is the modelling,
+estimation and validation layer of one: you write the physics, it stays
+synchronised with the measurements, and it reports how far the resulting forecast
+can be trusted.
 
-- At the bottom is a contract: `otwin-base`. Types and protocols, no algorithms, enforced by a test that fails the build if anyone adds one. It defines what counts as a twin — a thing with an energy function, an internal routing matrix, a dissipation matrix, a port. 
+It is aimed at engineers who need a defensible model of a real asset — a battery
+bank, an electrical machine, a hydraulic circuit, a thermal network — and who
+will have to answer the question *how accurate is it, and how do you know?*
 
-- Above that is a specification that's executable: `otwin-spec`. A schema for describing a twin, a set of fixtures whose answers are known in closed form, and a runner — `otwin-conformance` — that tells you whether your implementation is right-
 
-- Above that is everything that actually computes. `otwin-phs` and `otwin-iphs` for port-Hamiltonian and irreversible port-Hamiltonian dynamics. `otwin-learn` for neural networks constrained to that same form. `otwin-systems` for implementing a catalogue of physical models — water tank, DC motor, pumped hydro. `otwin-uq` for uncertainty that has been checked against measured coverage, and `otwin-eval` for validation. Then the supporting cast: `otwin-data`, `otwin-benchmarks`, `otwin-docs`, `otwin-notes`, `otwin-agents`. And three bindings — R MATLAB, Julia.
+## Models of physical assets
+
+Models of physical assets are routinely used to support decisions: when to
+schedule maintenance, how much capacity remains, whether a unit can meet a duty
+cycle. Two failure modes are common enough to be worth designing against.
+
+**A model extrapolates outside the range it was fitted to, and gives no
+indication that it has.** A model fitted to a year of operating data will
+reproduce that year. Asked about a longer horizon or an operating point never
+measured, a purely fitted model can drift in a way that violates conservation of
+energy, and nothing in the output reports it.
+
+**A reported accuracy figure does not survive scrutiny.** A model evaluated on a
+randomly partitioned time series is being tested on interpolation, not on
+forecasting. Reported without a reference forecaster, an error figure says
+nothing about whether the model beats repeating the last measured value.
+
+Otwin addresses the first by writing models in a form where the energy balance
+is a property of the algebra rather than of the fit, and the second by making
+out-of-sample partitioning and a reference forecaster the default in the
+validation interface rather than an option.
+
+
+## What the project provides
+
+| Repository | What it is |
+|---|---|
+| [**`otwin`**](https://github.com/otwin-core/otwin) | The Python library. Model class, numerical solvers, state estimators, forecast validation, and field connectors for SunSpec Modbus and Modbus TCP/RTU |
+| [**`otwin-spec`**](https://github.com/otwin-core/otwin-spec) | The specification and its **type-test procedure**: a set of reference cases whose correct answers are known in closed form, used to verify that an implementation is right. Language-independent |
+| [**`otwin-hybrid`**](https://github.com/otwin-core/otwin-hybrid) | A worked example in Python, Julia and R — predicting the end of life of a lithium-ion cell from the first 40 % of its life. Opens in Colab in one click |
 
 ---
 
-## Install
+## How the three fit together
 
-To install the tool you need:
+The **library** implements a model form: a state-space system written in terms
+of stored energy, internal power routing, dissipation, and external ports. If
+you have drawn a bond graph or an equivalent circuit, this is the same
+decomposition written as four functions. On top of that sit the estimators that
+keep the model in step with sensor readings, and the validation layer that
+measures the resulting forecasts.
 
-```bash
-pip install otwin-phs          # port-Hamiltonian systems + structure-preserving integration
-pip install otwin-systems      # a library of physical models
-pip install otwin-eval         # leakage-free forecast validation
-pip install otwin-uq           # calibrated uncertainty
-```
+The **specification** states what that form requires and provides a way to check
+it. A model that declares this structure is asserting two algebraic properties
+about its matrices, and those properties are what make the energy bound hold.
+They are not visible in a test-set error figure — a model with a subtly wrong
+interconnection matrix can score well on held-out data and still drift when
+extrapolated. So they are tested directly, against reference systems whose
+answers are known analytically: Torricelli discharge for a draining tank, the
+steady state of a separately excited DC motor, entropy production in a two-body
+heat exchanger.
 
-All them implement one small contract — [`otwin-base`](https://github.com/otwin-core/otwin-base)
+This follows the same pattern as a **type test** in IEC and IEEE practice: a
+one-time verification that a design meets its stated requirements, performed
+against defined test cases rather than against a previous run of the same
+software. Because the test suite communicates with an implementation over a
+process boundary rather than by importing it, it can verify an implementation
+written in any language.
 
----
+The **worked example** is where the project started, as a tutorial on building a
+digital twin of a lithium-ion battery. It remains a tutorial, and it reports its
+own results including the case where a straight line beats the physics-based
+model on RMSE.
+
+### Scope, against the formal definition
+
+IEEE PES Technical Report **TR137**, *Digital Twin of Large-Scale Power Systems*
+(December 2025), defines a digital twin as a *dynamic, synchronised virtual
+replica that integrates physics-based and data-driven models with real-time
+sensor data*. The discriminator commonly used to separate a twin from a
+simulation is bidirectional, automated data exchange with the asset.
+
+Otwin implements the physics-and-data model (known in AI systems as white and grey box models), the real-time ingestion, the state
+synchronisation and the predictive layer. It does **not** write back to the
+asset — every connector is read-only, and closed-loop actuation is deliberately
+out of scope. The asset-to-model direction is closed; the model-to-asset
+direction is left to your own control layer, where it belongs alongside the
+safety case.
+
 
 ## Where to start
 
-| I want to… | Go here |
+| If you want to… | Go to |
 |---|---|
-| **Understand the idea**, from a worked example in Python, Julia or R | [**`otwin-hybrid`**](https://github.com/otwin-core/otwin-hybrid) — one click into Colab |
-| **Model a physical system** | [`otwin-systems`](https://github.com/otwin-core/otwin-systems) + [`otwin-phs`](https://github.com/otwin-core/otwin-phs) |
-| **Validate a forecast** | [`otwin-eval`](https://github.com/otwin-core/otwin-eval) — useful far beyond digital twins |
-| **Attach calibrated uncertainty** | [`otwin-uq`](https://github.com/otwin-core/otwin-uq) |
-| **See some benchmark** | [`otwin-benchmarks`](https://github.com/otwin-core/otwin-benchmarks) |
-| **Check my own implementation** | [`otwin-spec`](https://github.com/otwin-core/otwin-spec) — `otwin-conformance` |
+| See a complete worked example before reading anything | [`otwin-hybrid`](https://github.com/otwin-core/otwin-hybrid) — one click into Colab, in Python, Julia or R |
+| Build a twin of a physical asset and validate its forecasts | [`otwin`](https://github.com/otwin-core/otwin) — installation, the model form, and worked models |
+| Understand what the model form requires, formally | [`otwin-spec`](https://github.com/otwin-core/otwin-spec) — the specification document |
+| Verify your own implementation, in any language | [`otwin-spec`](https://github.com/otwin-core/otwin-spec) — `otwin-conformance` |
 
----
 
-## How it works
+## Current status
 
-Otwin has three components:
-
-### 1. Contract
-
-[`otwin-base`](https://github.com/otwin-core/otwin-base) contains types and protocols and **zero algorithms** — a test fails the build if anyone adds one. Every tool depends on it; it depends on NumPy in python.
-
-A model satisfies the contract *structurally*:
-```python
-class WaterTank:
-    n_states, n_inputs = 1, 1
-    def H(self, x): ...    # the energy stored
-    def J(self, x): ...    # routed losslessly   — must satisfy J = -Jᵀ
-    def R(self, x): ...    # dissipated          — must be PSD
-    def g(self, x): ...    # the port
-    def rhs(self, x, u, t): ...
-    def observe(self, x, u, t): ...
-
-from otwin_base import PortHamiltonianModel
-isinstance(WaterTank(), PortHamiltonianModel)   # True
-```
-
-### 2. A standarized physical model
-
-A port-Hamiltonian system is a way of writing down a physical model in terms of its energy rather than in terms of its behaviour. When we want to model something we write "here is how the state changes each instant". We write one function, fitted or derived, that maps the current state to a rate of change. 
-
-The port-Hamiltonian way splits the same model into four separate statements about energy, and the dynamics fall out of them:
-
-- How much energy is stored, as a function of the state. For a water tank, the water sitting in it.
-- Where energy moves internally, losing none of it. Kinetic becoming potential, electrical becoming mechanical. This is the `J` part.
-- Where energy leaves for good. Friction, resistance, viscous drag. This is `R`.
-- Where energy enters or exits through the boundary — the port. The pump feeding the tank, the valve draining it.
-
-So [`otwin-spec`](https://github.com/otwin-core/otwin-spec) checks it, against answers known in closed form:
-
-```
-$ otwin-conformance python
-    PASS  dc_motor_steady_state       ω_ss = VK/(R_e·b + K²), to 1e-5
-    PASS  pumped_hydro_conservation   dH/dt = −c(p_u−p_l)², analytic leakage
-    PASS  water_tank_drain_law        Torricelli's exact solution
-    PASS  iphs_second_law             dU/dt = 0 and σ ≥ 0, rising
-    ...
-    8 passed, 0 failed — conformant: yes
-```
-
-The suite ships deliberately broken implementations and asserts each is caught — including one containing **no physics at all**, which is the adversary a suite like this usually fails to survive.
-
-### 3. Checklist
-
-We do a checklist and run it against your implementation. If it passes, it will be otwin-conformant
-Temporal splits, not random ones. Baselines that are mandatory rather than optional. Skill score as the headline, because a model with excellent $R^2$ can still lose to repeating yesterday's value.
-
----
-
-## Where to contribute
-
-**You do not need to know anything about Otwin's internals to contribute a physical system.** You need to know your own domain. That is the widest door here, deliberately.
-
-| I know about… | Contribute | Where |
-|---|---|---|
-| **a physical system** — thermal, electrical, chemical, mechanical, hydraulic | a model: `H`, `J`, `R`, `g` + one closed-form check | [`otwin-systems`](https://github.com/otwin-core/otwin-systems/labels/good-first-system) |
-| irreversible thermodynamics | entropy-producing systems | [`otwin-iphs`](https://github.com/otwin-core/otwin-iphs) |
-| forecasting and validation | protocols, baselines, metrics | [`otwin-eval`](https://github.com/otwin-core/otwin-eval) |
-| uncertainty quantification | conformal, GP, ensembles | [`otwin-uq`](https://github.com/otwin-core/otwin-uq) |
-| numerical analysis | structure-preserving integrators | [`otwin-phs`](https://github.com/otwin-core/otwin-phs) |
-| **MATLAB** | **own the MATLAB binding** | [`otwin-matlab`](https://github.com/otwin-core/otwin-matlab) |
-| **Julia** | **own the Julia binding** | [`Otwin.jl`](https://github.com/otwin-core/Otwin.jl) |
-| a real asset with real data | a case study, with a DOI and your name on it | [`otwin-benchmarks`](https://github.com/otwin-core/otwin-benchmarks) |
-
-### What contributing a system actually involves
-
-Four functions, plus **one result you know in advance** — a steady state, a conservation law, an efficiency, an exact solution.
-
-CI proves `J` is skew, `R` is PSD, the power balance holds, and your analytic check passes. **Review is then a ten-minute conversation about whether the model is interesting and correctly cited — not a two-hour audit of your algebra.** That is what makes this maintainable by one person and open to everyone.
-
-`water_tank` is the worked example: a complete system in about forty lines, with Torricelli's exact solution as its test.
-
----
-
-## Open maintainer slots
-
-Scoped on purpose. "Co-maintain Otwin" is unanswerable; "own the MATLAB binding" is a decision you can make in a minute.
-
-| Slot | Who it suits |
+| | |
 |---|---|
-| **[`otwin-matlab`](https://github.com/otwin-core/otwin-matlab)** | a BESS, utility or power-systems engineer — the language the audience actually uses |
-| **[`Otwin.jl`](https://github.com/otwin-core/Otwin.jl)** | someone in the Julia / SciML community |
-| **[`otwin-iphs`](https://github.com/otwin-core/otwin-iphs)** | anyone working in the Ramírez–Maschke–Sbarbaro line |
-| **[`otwin-uq`](https://github.com/otwin-core/otwin-uq)** | a conformal-prediction researcher |
+| **Status** | Pre-1.0. Usable and tested; expect breaking API changes before version 1.0. Pin a version in your project |
+| **Distribution** | Not yet on PyPI. Install from source: `pip install git+https://github.com/otwin-core/otwin.git` |
+| **Languages** | Python. Julia and MATLAB implementations are open contributor positions, not yet written |
+| **Maintainers** | One. There is no governance structure yet, and there will not be one until there is more than one maintainer |
+| **Deployment** | The methods were presented at the IEEE PES General Meeting 2026, in the Energy Storage & Stationary Battery Committee panel *AI-powered Digital Twins for Grid-Scale Energy Storage* (paper 26PESGM2792). There is no production deployment of the library on an operating asset. If you deploy it, an issue saying so would be useful |
+| **Licence** | Apache 2.0 throughout |
 
-It means reviewing pull requests in your area and having an opinion when a design decision touches it. It does **not** mean writing code on a schedule, and it does not require knowing the rest of the ecosystem. Stop whenever you like and we will say so gracefully.
 
-Open an issue titled `Maintainer: <your name>`, or email javier@jmarin.info. A short yes is enough.
 
----
+## Contributing
 
-## The tools
+You can contribute to this project as maintainer or creator. We have several ideas that will strenghten the project:
 
-| Repository | Language | Maturity | What it is |
-|---|---|---|---|
-| [`otwin-base`](https://github.com/otwin-core/otwin-base) | Python | **Medium** | the contract: types and protocols, no algorithms |
-| [`otwin-spec`](https://github.com/otwin-core/otwin-spec) | Python + JSON | **Medium** | the specification and its conformance suite |
-| [`otwin-phs`](https://github.com/otwin-core/otwin-phs) | Python | **Medium** | port-Hamiltonian systems, structure-preserving integration |
-| [`otwin-systems`](https://github.com/otwin-core/otwin-systems) | Python | **Medium** | the library of physical models |
-| [`otwin-eval`](https://github.com/otwin-core/otwin-eval) | Python | **Medium** | leakage-free validation |
-| [`otwin-uq`](https://github.com/otwin-core/otwin-uq) | Python | **Medium** | calibrated uncertainty |
-| [`otwin-iphs`](https://github.com/otwin-core/otwin-iphs) | Python | **Low** | irreversible port-Hamiltonian systems |
-| [`otwin-learn`](https://github.com/otwin-core/otwin-learn) | Python | **Low** | networks with enforced structure |
-| [`otwin-hybrid`](https://github.com/otwin-core/otwin-hybrid) | Python · Julia · R | **Tutorial** | the worked example this project grew from |
-| [`otwin-benchmarks`](https://github.com/otwin-core/otwin-benchmarks) | Python | **Medium** | worked examples, every number on CI |
-| [`otwin-data`](https://github.com/otwin-core/otwin-data) | Python | **Medium** | datasets by identity: checksums, licences, citations |
-| [`Otwin.jl`](https://github.com/otwin-core/Otwin.jl) | Julia | **Pending** | contract written, binding not |
-| [`otwin-matlab`](https://github.com/otwin-core/otwin-matlab) | MATLAB | **Pending** | contract written, binding not |
-| [`otwin-agents`](https://github.com/otwin-core/otwin-agents) | Python | **Research** | an open question, not a product |
+- **A physical system.** A model of something not yet in the catalogue —
+a heat exchanger network, a hydraulic actuator, a synchronous machine, a
+distillation column. What it takes: four functions of the state, plus one result
+you know in advance (a steady state, a conservation law, an efficiency, an exact
+solution) used as its test. Continuous integration checks the structural
+properties automatically, so review is a short conversation about whether the
+model is correct and properly cited, not an audit of your algebra. You need to
+know your own domain and nothing about this library's internals.
 
-**Medium** — usable and tested; expect breaking changes before 1.0.
-**Low** — works, and is honest about what it does not cover.
-**Pending** — announced and specified; not implemented.
-**Research** — an open question.
+- **A reference case for the specification.** A physical system with an
+analytically known answer that no current case covers. It also needs a
+deliberately faulty implementation demonstrating that the check catches the
+fault it was written for — a check that has never been shown to fail is not
+evidence.
 
-Labelling our own packages "Research" is a credibility gain, not an admission. It tells you what to expect.
+- **A Julia or MATLAB implementation.** Because the type-test procedure verifies
+an implementation over a process boundary, a second-language implementation is
+well-defined work with an objective completion criterion: pass the test suite
+unmodified. Scope is roughly a thousand lines. Both positions are open.
 
----
+To take a position, open an issue titled `Maintainer: <your name>` on the
+relevant repository, or email javier@jmarin.info. It means reviewing pull
+requests in your area and having an opinion when a design decision touches it.
+It does not mean writing code on a schedule.
 
-## Coming from somewhere else
 
-- **Simulink** — you already think in blocks exchanging power through ports. A port-Hamiltonian model is that, with conservation guaranteed by algebra rather than by care.
-- **PyBaMM** — PyBaMM gives you detailed electrochemistry. Otwin covers the systems around it, and treats battery State-of-Health as an *empirical law* rather than an energy balance, which is the correct model class for capacity fade.
-- **scikit-learn** — same shape: choose a structure, fit, validate. The differences are that the structure comes from physics, validation is temporal by default, and a baseline is mandatory.
+## Background reading
 
----
+- IEEE PES Technical Report **TR137** (2025). *Digital Twin of Large-Scale Power
+  Systems: Fundamentals, Challenges, and Future Prospects.* PSOPE Committee.
+- van der Schaft, A. & Jeltsema, D. (2014). *Port-Hamiltonian Systems Theory: An
+  Introductory Overview.* Foundations and Trends in Systems and Control.
+- Karnopp, D., Margolis, D. & Rosenberg, R. *System Dynamics: Modeling,
+  Simulation, and Control of Mechatronic Systems.* Wiley.
+- Willems, J. C. (1972). *Dissipative dynamical systems.* Archive for Rational
+  Mechanics and Analysis, 45(5).
+- ISO 13374 — *Condition monitoring and diagnostics of machines: data
+  processing, communication and presentation.*
+- ISO 13381-1:2015 — *Condition monitoring and diagnostics of machines:
+  prognostics.*
 
-## How to cite
-
-Each repository has a `CITATION.cff` and its own DOI. **Cite the components you used** — `print_citations()` will tell you which, including the papers behind the methods.
-
-## License
-
-Apache 2.0 throughout.
+Each repository carries a `CITATION.cff`. Cite the components you use.
