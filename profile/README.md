@@ -121,7 +121,7 @@ safety case.
 | | |
 |---|---|
 | **Status** | Pre-1.0. Usable and tested; expect breaking API changes before version 1.0. Pin a version in your project |
-| **Distribution** | Not yet on PyPI. Install from source: `pip install git+https://github.com/otwin-core/otwin.git` |
+| **Distribution** | `pip install otwin` |
 | **Languages** | Python. Julia and MATLAB implementations are open contributor positions, not yet written |
 | **Maintainers** | One. There is no governance structure yet, and there will not be one until there is more than one maintainer |
 | **Deployment** | The methods were presented at the IEEE PES General Meeting 2026, in the Energy Storage & Stationary Battery Committee panel *AI-powered Digital Twins for Grid-Scale Energy Storage* (paper 26PESGM2792). There is no production deployment of the library on an operating asset. If you deploy it, an issue saying so would be useful |
