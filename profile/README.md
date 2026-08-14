@@ -1,9 +1,18 @@
+<br>
+
 <div align="center">
 
-# Otwin: open-source tools set for building physics-informed digital twins of engineering assets
+# Otwin: open-source tools for building physics-informed digital twins
 
+<br>
+
+[![Maintenance](https://img.shields.io/badge/Maintained-yes-green.svg?style=flat-square)](https://github.com/otwin-core/)
+[![Contibutors](https://img.shields.io/badge/Contributors-Wellcome-green.svg?style=flat-square)](https://shields.io/)
+[![PyPI](https://img.shields.io/pypi/v/otwin?color=1a4fd6&cacheSeconds=3600?style=flat-square)](https://pypi.org/project/otwin/)
+[![Python](https://img.shields.io/pypi/pyversions/otwin?cacheSeconds=3600?style=flat-square)](https://pypi.org/project/otwin/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-brightgreen?style=flat-square)](https://opensource.org/license/apache-2-0)
-[![Python](https://img.shields.io/badge/python-3.10%2B-blue?style=flat-square)](https://www.python.org/downloads/)
+
+<br>
 
 [Models of physical assets](#models-of-physical-assets) ·
 [What we provide](#what-the-project-provides) ·
@@ -14,6 +23,7 @@
 
 </div>
 
+<br>
 
 A digital twin is a model of a physical asset that is kept in step with the
 asset's sensors and used to predict what it will do next. Otwin is the modelling,
@@ -21,24 +31,23 @@ estimation and validation layer of one: you write the physics, it stays
 synchronised with the measurements, and it reports how far the resulting forecast
 can be trusted.
 
-It is aimed at engineers who need a defensible model of a real asset — a battery
-bank, an electrical machine, a hydraulic circuit, a thermal network — and who
-will have to answer the question *how accurate is it, and how do you know?*
+It is aimed at engineers who need a functional model of a real asset — a battery
+bank, an electrical machine, a hydraulic circuit, a thermal network.
 
 
 ## Models of physical assets
 
-Models of physical assets are routinely used to support decisions: when to
+Models of physical assets are used to support decisions: when to
 schedule maintenance, how much capacity remains, whether a unit can meet a duty
 cycle. Two failure modes are common enough to be worth designing against.
 
-**A model extrapolates outside the range it was fitted to, and gives no
+- **A model extrapolates outside the range it was fitted to, and gives no
 indication that it has.** A model fitted to a year of operating data will
 reproduce that year. Asked about a longer horizon or an operating point never
 measured, a purely fitted model can drift in a way that violates conservation of
 energy, and nothing in the output reports it.
 
-**A reported accuracy figure does not survive scrutiny.** A model evaluated on a
+- **A reported accuracy figure does not survive scrutiny.** A model evaluated on a
 randomly partitioned time series is being tested on interpolation, not on
 forecasting. Reported without a reference forecaster, an error figure says
 nothing about whether the model beats repeating the last measured value.
