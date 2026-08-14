@@ -1,6 +1,6 @@
 <div align="center">
 
-# Otwin:Open-source tools for building physics-informed digital twins of engineering assets
+# Otwin: open-source tools set for building physics-informed digital twins of engineering assets
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-brightgreen?style=flat-square)](https://opensource.org/license/apache-2-0)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue?style=flat-square)](https://www.python.org/downloads/)
