@@ -8,8 +8,7 @@
 
 [![Maintenance](https://img.shields.io/badge/Maintained-yes-green.svg?style=flat-square)](https://github.com/otwin-core/)
 [![Contibutors](https://img.shields.io/badge/Contributors-Wellcome-green.svg?style=flat-square)](https://shields.io/)
-[![PyPI](https://img.shields.io/pypi/v/otwin?color=1a4fd6&cacheSeconds=3600?style=flat-square)](https://pypi.org/project/otwin/)
-[![Python](https://img.shields.io/pypi/pyversions/otwin?cacheSeconds=3600?style=flat-square)](https://pypi.org/project/otwin/)
+
 [![License](https://img.shields.io/badge/license-Apache%202.0-brightgreen?style=flat-square)](https://opensource.org/license/apache-2-0)
 
 <br>
@@ -64,7 +63,7 @@ validation interface rather than an option.
 |---|---|
 | [**`otwin`**](https://github.com/otwin-core/otwin) | The Python library. Model class, numerical solvers, state estimators, forecast validation, and field connectors for SunSpec Modbus and Modbus TCP/RTU |
 | [**`otwin-spec`**](https://github.com/otwin-core/otwin-spec) | The specification and its **type-test procedure**: a set of reference cases whose correct answers are known in closed form, used to verify that an implementation is right. Language-independent |
-| [**`otwin-hybrid`**](https://github.com/otwin-core/otwin-hybrid) | A worked example in Python, Julia and R — predicting the end of life of a lithium-ion cell from the first 40 % of its life. Opens in Colab in one click |
+| [**`otwin-hybrid`**](https://github.com/otwin-core/otwin-hybrid) | A worked example in Python — predicting the end of life of a lithium-ion cell from the first 40 % of its life. A link to open in Colab is available |
 
 ---
 
@@ -132,8 +131,8 @@ safety case.
 | **Status** | Pre-1.0. Usable and tested; expect breaking API changes before version 1.0. Pin a version in your project |
 | **Distribution** | `pip install otwin` |
 | **Languages** | Python. Julia and MATLAB implementations are open contributor positions, not yet written |
-| **Maintainers** | One. There is no governance structure yet, and there will not be one until there is more than one maintainer |
-| **Deployment** | The methods were presented at the IEEE PES General Meeting 2026, in the Energy Storage & Stationary Battery Committee panel *AI-powered Digital Twins for Grid-Scale Energy Storage* (paper 26PESGM2792). There is no production deployment of the library on an operating asset. If you deploy it, an issue saying so would be useful |
+| **Maintainers** | Officially one. There is no governance structure yet, and there will not be one until there is more than one maintainer |
+| **Deployment** | The methods were presented at the IEEE PES General Meeting 2026, in the Energy Storage & Stationary Battery Committee panel *AI-powered Digital Twins for Grid-Scale Energy Storage* (paper 26PESGM2792) |
 | **Licence** | Apache 2.0 throughout |
 
 
