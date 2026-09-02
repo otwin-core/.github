@@ -86,7 +86,7 @@ validation interface rather than an option.
 
 | If you want to… | Go to |
 |---|---|
-| See a complete worked example before reading anything | [`otwin-hybrid`](https://github.com/otwin-core/otwin-hybrid) — one click into Colab, in Python, Julia or R |
+| See a complete worked example before reading anything | [`otwin-hybrid`](https://github.com/otwin-core/otwin-hybrid) — one click into Colab, in Python. Not yet available in other lamguages |
 | Build a twin of a physical asset and validate its forecasts | [`otwin`](https://github.com/otwin-core/otwin) — installation, the model form, and worked models |
 | Understand what the model form requires, formally | [`otwin-spec`](https://github.com/otwin-core/otwin-spec) — the specification document |
 | Verify your own implementation, in any language | [`otwin-spec`](https://github.com/otwin-core/otwin-spec) — `otwin-conformance` |
