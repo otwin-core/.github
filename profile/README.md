@@ -8,7 +8,6 @@
 
 [![Maintenance](https://img.shields.io/badge/Maintained-yes-green.svg?style=flat-square)](https://github.com/otwin-core/)
 [![Contibutors](https://img.shields.io/badge/Contributors-Wellcome-green.svg?style=flat-square)](https://shields.io/)
-
 [![License](https://img.shields.io/badge/license-Apache%202.0-brightgreen?style=flat-square)](https://opensource.org/license/apache-2-0)
 
 <br>
@@ -16,6 +15,7 @@
 [Models of physical assets](#models-of-physical-assets) ·
 [What we provide](#what-the-project-provides) ·
 [How it fits together](#how-the-three-fit-together) ·
+[Scope](#scope) ·
 [Where to start](#where-to-start) ·
 [Status](#current-status) ·
 [Contributing](#contributing)
@@ -63,20 +63,22 @@ validation interface rather than an option.
 |---|---|
 | [**`otwin`**](https://github.com/otwin-core/otwin) | The Python library. Model class, numerical solvers, state estimators, forecast validation, and field connectors for SunSpec Modbus and Modbus TCP/RTU |
 | [**`otwin-spec`**](https://github.com/otwin-core/otwin-spec) | The specification and its **type-test procedure**: a set of reference cases whose correct answers are known in closed form, used to verify that an implementation is right. Language-independent |
-| [**`otwin-hybrid`**](https://github.com/otwin-core/otwin-hybrid) | A worked example in Python — predicting the end of life of a lithium-ion cell from the first 40 % of its life. A link to open in Colab is available |
+| [**`otwin-hybrid`** ](https://github.com/otwin-core/otwin-hybrid) | A worked example in Python — predicting the end of life of a lithium-ion cell from the first 40 % of its life. A link to open in Colab is available |
 
 ---
 
 ## How the three fit together
 
-The **library** implements a model form: a state-space system written in terms
+### Library
+Implements a model form: a state-space system written in terms
 of stored energy, internal power routing, dissipation, and external ports. If
 you have drawn a bond graph or an equivalent circuit, this is the same
 decomposition written as four functions. On top of that sit the estimators that
 keep the model in step with sensor readings, and the validation layer that
 measures the resulting forecasts.
 
-The **specification** states what that form requires and provides a way to check
+### Specifications
+It states what that form requires and provides a way to check
 it. A model that declares this structure is asserting two algebraic properties
 about its matrices, and those properties are what make the energy bound hold.
 They are not visible in a test-set error figure — a model with a subtly wrong
@@ -86,19 +88,21 @@ answers are known analytically: Torricelli discharge for a draining tank, the
 steady state of a separately excited DC motor, entropy production in a two-body
 heat exchanger.
 
-This follows the same pattern as a **type test** in IEC and IEEE practice: a
-one-time verification that a design meets its stated requirements, performed
-against defined test cases rather than against a previous run of the same
-software. Because the test suite communicates with an implementation over a
-process boundary rather than by importing it, it can verify an implementation
+### Type test
+We follows the specifications set in IEC and IEEE practice: a one-time verification that a design meets its stated requirements, performed
+against defined test cases rather than against a previous run of the same software. Because the test suite communicates with an implementation over a process boundary rather than by importing it, it can verify an implementation
 written in any language.
 
-The **worked example** is where the project started, as a tutorial on building a
-digital twin of a lithium-ion battery. It remains a tutorial, and it reports its
-own results including the case where a straight line beats the physics-based
-model on RMSE.
+### Worked example
 
-### Scope, against the formal definition
+[![Stars](https://img.shields.io/github/stars/otwin-core/otwin-hybrid?style=flat-square&label=Stars)](https://github.com/otwin-core/otwin-hybrid/stargazers)
+[![Forks](https://img.shields.io/github/forks/otwin-core/otwin-hybrid?style=flat-square&label=Forks)](https://github.com/otwin-core/otwin-hybrid/forks)
+
+A tutorial on building a digital twin of a lithium-ion battery. It remains a tutorial, and it reports its own results including the case where a straight line beats the physics-based model on RMSE.
+
+
+
+## Scope
 
 IEEE PES Technical Report **TR137**, *Digital Twin of Large-Scale Power Systems*
 (December 2025), defines a digital twin as a *dynamic, synchronised virtual
