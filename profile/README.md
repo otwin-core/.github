@@ -16,8 +16,9 @@
 [What we provide](#what-the-project-provides) ·
 [How it fits together](#how-the-three-fit-together) ·
 [Scope](#scope) ·
-[Where to start](#where-to-start) ·
+[How to start](#how-to-start) ·
 [Status](#current-status) ·
+[Scope](#scope) ·
 [Contributing](#contributing)
 
 </div>
@@ -95,17 +96,24 @@ written in any language.
 
 ### Worked example
 
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)(https://github.com/otwin-core/otwin-hybrid)]
 [![Stars](https://img.shields.io/github/stars/otwin-core/otwin-hybrid?style=flat-square&label=Stars)](https://github.com/otwin-core/otwin-hybrid/stargazers)
 [![Forks](https://img.shields.io/github/forks/otwin-core/otwin-hybrid?style=flat-square&label=Forks)](https://github.com/otwin-core/otwin-hybrid/forks)
 
 A tutorial on building a digital twin of a lithium-ion battery. It remains a tutorial, and it reports its own results including the case where a straight line beats the physics-based model on RMSE.
 
-
+<br>
 
 ## Scope
 
-IEEE PES Technical Report **TR137**, *Digital Twin of Large-Scale Power Systems*
-(December 2025), defines a digital twin as a *dynamic, synchronised virtual
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/otwin-core/.github/main/profile/assets/IEEE.png"  width="55%">
+
+</div>
+
+IEEE PES Technical Report **PES-TR137**, *Digital Twin of Large-Scale Power Systems*
+(November 2025), defines a digital twin as a *dynamic, synchronised virtual
 replica that integrates physics-based and data-driven models with real-time
 sensor data*. The discriminator commonly used to separate a twin from a
 simulation is bidirectional, automated data exchange with the asset.
@@ -117,8 +125,9 @@ out of scope. The asset-to-model direction is closed; the model-to-asset
 direction is left to your own control layer, where it belongs alongside the
 safety case.
 
+<br>
 
-## Where to start
+## How to start
 
 | If you want to… | Go to |
 |---|---|
