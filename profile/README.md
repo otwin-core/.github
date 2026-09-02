@@ -1,13 +1,13 @@
-<br>
-
 <div align="center">
+
+<img src="https://raw.githubusercontent.com/otwin-core/.github/main/profile/assets/otwin-woodmark.png"  width="35%">
 
 # Otwin: open-source tools for building physics-informed digital twins
 
 <br>
 
-[![Maintenance](https://img.shields.io/badge/Maintained-yes-green.svg?style=flat-square)](https://github.com/otwin-core/)
-[![Contibutors](https://img.shields.io/badge/Contributors-Wellcome-green.svg?style=flat-square)](https://shields.io/)
+[![Maintenance](https://img.shields.io/badge/Maintained-yes-brightgreen.svg?style=flat-square)](https://github.com/otwin-core/)
+[![Contibutors](https://img.shields.io/badge/Contributors-Wellcome-brightgreen.svg?style=flat-square)](https://shields.io/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-brightgreen?style=flat-square)](https://opensource.org/license/apache-2-0)
 
 <br>
