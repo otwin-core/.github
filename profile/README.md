@@ -1,10 +1,9 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/otwin-core/.github/main/profile/assets/otwin-woodmark.png" width="35%">
+<img src="https://raw.githubusercontent.com/otwin-core/.github/main/profile/assets/otwin_header.png">
 
 # Otwin: an open-source foundation for physics-informed Digital Twins
 
-### Model real engineering systems. Connect models to real assets. Test what they predict.
 
 <br>
 
