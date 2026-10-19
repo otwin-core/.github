@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/otwin-core/.github/main/profile/assets/otwin_header.png">
+<img src="assets/brand/otwin-github-header-1a.png">
 
 # Otwin: open-source physics for Digital Twins
 
