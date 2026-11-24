@@ -38,13 +38,25 @@ pip install otwin
 
 <div align="center">
 
-<img src="https://github.com/otwin-core/.github/blob/b247a7d499ffbb0e3aeb9dc1a8d73c4209097b45/profile/assets/brand/otwin-battery-twin.gif" width="90%" alt="A battery cell on a cycler. The twin follows its capacity cycle by cycle, forecasts it with a 90 % range, and asks for a replacement before the cell reaches end of life.">
+<img src="assets/brand/otwin-battery-twin.gif" width="90%" alt="A battery cell on a cycler. The twin follows its capacity cycle by cycle, forecasts it with a 90 % range, and asks for a replacement before the cell reaches end of life.">
 
 <sub>Real data from 44 cells the twin had never seen (Severson et al., 2019). On every one of them the replacement order came before end of life, a median of 76 cycles ahead.</sub>
 
-</div>
+<br><br>
 
-<br>
+<img src="assets/brand/otwin-grid-twin.gif" width="90%">
+
+<sub>The grid is simulated, with PMU noise; the twin is the swing equation built from Otwin's rotational parts. Across 43 small disturbances the median inertia estimate error was 1.1 %, and the twin asks for battery fast response two hours ahead. The numbers · the animation.</sub>
+
+<br><br>
+
+<img src="assets/brand/otwin-pump-twin.gif" width="90%">
+
+<sub>The line is built with Otwin's hydraulic parts; the cloth fouling is recovered from a pressure sensor with 2 % noise, and the cleaning is ordered when the extra energy passes its cost.</sub>
+
+<br><br>
+
+</div>
 
 ## Repositories
 
