@@ -8,11 +8,13 @@
 
 <br>
 
-</div>
 
 ## Welcome to the Otwin project
+[![License](https://img.shields.io/badge/license-Apache--2.0-7a2ffc?style=flat-square&logo=apache&logoColor=white&labelColor=1d1d1f)](https://github.com/otwin-core/otwin/blob/main/LICENSE)
 
-A model of a battery, a pump or a power grid becomes a digital twin when it stays connected to the real machine and can say how far to trust itself. Otwin is open-source software for building those twins. You describe the equipment as components and connections, the way its drawing reads — or bring a model from Modelica or Julia — and Otwin fits it to the machine's measurements, forecasts with a range whose coverage is measured on data the model never saw, audits what the model promised against what the machine did, and refuses to answer outside what was validated. It reads the measurements from the plant itself, over Modbus, SunSpec and OPC UA.
+</div>
+
+A model of a real asset or a real industrial process becomes a digital twin when it stays connected to the real machine and can say how far to trust itself. Otwin is open-source software for building those twins. You describe the equipment as components and connections, the way its drawing reads — or bring a model from Modelica or Julia — and Otwin fits it to the machine's measurements, forecasts with a range whose coverage is measured on data the model never saw, audits what the model promised against what the machine did, and refuses to answer outside what was validated. It reads the measurements from the plant itself, over Modbus, SunSpec and OPC UA.
 
 <br>
 
