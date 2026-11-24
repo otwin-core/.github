@@ -14,13 +14,15 @@
 
 A model of a battery, a pump or a power grid becomes a digital twin when it stays connected to the real machine and can say how far to trust itself. Otwin is open-source software for building those twins. You describe the equipment as components and connections, the way its drawing reads — or bring a model from Modelica or Julia — and Otwin fits it to the machine's measurements, forecasts with a range whose coverage is measured on data the model never saw, audits what the model promised against what the machine did, and refuses to answer outside what was validated. It reads the measurements from the plant itself, over Modbus, SunSpec and OPC UA.
 
+<br>
+
+## Where to start
+
 ```bash
 pip install otwin
 ```
 
 <br>
-
-## Where to start
 
 | | You want to | Start here |
 |:---:|---|---|
@@ -38,7 +40,7 @@ pip install otwin
 
 <img src="https://github.com/otwin-core/.github/blob/b247a7d499ffbb0e3aeb9dc1a8d73c4209097b45/profile/assets/brand/otwin-battery-twin.gif" width="90%" alt="A battery cell on a cycler. The twin follows its capacity cycle by cycle, forecasts it with a 90 % range, and asks for a replacement before the cell reaches end of life.">
 
-<sub>Real data from 44 cells the twin had never seen (Severson et al., 2019). On every one of them the replacement order came before end of life, a median of 76 cycles ahead. [Script](assets/gifs/battery_twin.py)</sub>
+<sub>Real data from 44 cells the twin had never seen (Severson et al., 2019). On every one of them the replacement order came before end of life, a median of 76 cycles ahead.</sub>
 
 </div>
 
