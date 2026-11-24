@@ -74,13 +74,7 @@ The code behind Otwin has been public for more than eight years. It began with a
 
 <br>
 
-<img src="assets/ieee-pes-panel.png" width="30%" alt="Cover of IEEE PES technical report PES-TR137, Digital Twin of Large-Scale Power Systems, prepared by the IEEE Task Force on Digital Twin of Large-Scale Power Systems.">
-
-<sub>The panel that extended the invitation: the IEEE Task Force on Digital Twin of Large-Scale Power Systems, whose technical report is [PES-TR137](https://cmte.ieee.org/pes-dtlsps) (November 2025).</sub>
-
 </div>
-
-Every claim on these pages can be checked: the printed numbers in the tutorials are verified in CI, the drawings are produced by the scripts linked beside them, and another implementation of the same model must give the same answer as the specification's test suite.
 
 <br>
 
