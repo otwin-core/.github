@@ -39,7 +39,7 @@ pip install otwin
 
 <div align="center">
 
-<img src="assets/gifs/otwin-battery-twin.gif" width="90%" alt="A battery cell on a cycler. The twin follows its capacity cycle by cycle, forecasts it with a 90 % range, and asks for a replacement before the cell reaches end of life.">
+<img src="https://github.com/otwin-core/.github/blob/b247a7d499ffbb0e3aeb9dc1a8d73c4209097b45/profile/assets/brand/otwin-battery-twin.gif" width="90%" alt="A battery cell on a cycler. The twin follows its capacity cycle by cycle, forecasts it with a 90 % range, and asks for a replacement before the cell reaches end of life.">
 
 <sub>Real data from 44 cells the twin had never seen (Severson et al., 2019). On every one of them the replacement order came before end of life, a median of 76 cycles ahead. [Script](assets/gifs/battery_twin.py)</sub>
 
