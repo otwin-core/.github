@@ -2,16 +2,13 @@
 
 <img src="assets/brand/otwin-header.png" width="100%" alt="otwin: open digital twins of real equipment. A battery plant at dusk with a live dashboard over it: state of health 87.4 %, coverage 91 %, and a warning that the band width is trending up.">
 
-<br>
+<br><br>
+
+<img src="https://github.com/otwin-core/.github/blob/782c6c47974c053a713791805666712e8107e81f/profile/assets/brand/favicon-512.png" width=15%>
 
 <br>
-
-[![License](https://img.shields.io/badge/license-Apache%202.0-7a2ffc.svg)](https://opensource.org/license/apache-2-0)
-
 
 </div>
-
-<br>
 
 ## Welcome to the Otwin project
 
