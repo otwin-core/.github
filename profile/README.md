@@ -74,13 +74,7 @@ pip install otwin
 
 ## About this project
 
-The code behind Otwin has been public for more than eight years. It began with a Towards Data Science article, at a time when very little open software for digital twins existed, and has grown since then into the library, the specification and the examples above. In 2026 the project was presented at the IEEE PES General Meeting, in a panel on digital twins, at the invitation of Sandia National Laboratories.
-
-<div align="center">
-
-[![IEEE PES General Meeting 2026](https://img.shields.io/badge/IEEE%20PES%20General%20Meeting%202026-invited%20panel-00629B?logo=ieee&logoColor=white)](https://pes-gm.org/)
-[![Towards Data Science](https://img.shields.io/badge/Towards%20Data%20Science-the%20original%20article-12100E?logo=medium&logoColor=white)](https://towardsdatascience.com/)
-
+The code behind Otwin has been public for more than eight years. It began with a Towards Data Science post in 2021 [![Towards Data Science](https://img.shields.io/badge/Towards%20Data%20Science-digital%20twin%20python-7a2ffc?style=flat-square&logo=medium&logoColor=white&labelColor=1d1d1f)](https://towardsdatascience.com/how-to-build-a-digital-twin-b31058fd5d3e/) at a time when very little open software for digital twins existed, and has grown since then into the library, the specification and the examples above. In 2026 the project was presented at the IEEE PES General Meeting, in a panel on digital twins, at the invitation of Sandia National Laboratories. [![IEEE PES General Meeting 2026](https://img.shields.io/badge/IEEE%20PES%20General%20Meeting%202026-invited%20panel-7a2ffc?style=flat-square&logo=ieee&logoColor=white&labelColor=1d1d1f)](https://www.researchgate.net/publication/410938423_Physics-Informed_Digital_Twin_for_Grid-Scale_Storage_Calibrated_forecasts_for_predictive_maintenance_and_real-time_optimization)
 <br>
 
 </div>
